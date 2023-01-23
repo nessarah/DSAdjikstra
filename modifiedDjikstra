@@ -1,0 +1,133 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define INF 999
+
+//DIJKSTRA
+
+int V, s, cost[100][100];
+int d[100];
+bool visited[100] = {0};
+int parent[100];
+
+void init(){
+	for (int i = 0; i< V ; i++){
+		parent[i]=i;
+		d[i] = INF ;
+	}
+	d[s] = 0;
+}
+
+int getMin(int d[], bool visited[]){
+	int minvalue = INF;
+	int minnode = 0;
+	for(int i = 0; i<V; i++){
+		if(!visited[i] && d[i] < minvalue){
+			minvalue = d[i];
+			minnode = i;
+		}
+	}
+	return minnode;
+}
+
+void display(int d[], int parent[]){
+	//cout<<"Node:\t\t\tCost : \t\t\tPath";
+	
+	for (int i=0; i <V ; i++)
+	{
+		//cout<<i<<"\t\t\t"<<d[i]<<"\t\t\t"<<" ";
+		
+		cout<<i<<" ";
+		int parnode = parent[i];
+		
+		while(parnode != -1){
+			cout<<" <- " << parnode << " ";
+			parnode = parent[parnode];
+		}
+		cout<<endl;
+		cout<<"::::Distance = " << d[i];
+		cout<<endl;
+	}
+}
+
+void dijkstra (int s) {
+	int parent[100], d[100];
+	bool visited[100] = {0};
+	fill(d, d+V, INF);
+	
+	d[s] = 0;
+	parent[s] = -1;
+	
+	for(int i = 0; i < V-1; i++){
+		int u = getMin(d, visited) ;
+		visited[u] = true;
+		cout << " min = " << u << endl;
+		for(int v = 0; v < V; v++){
+			if(!visited[u] && (d[u]+cost[u][v]) < d[v] && cost[u][v]!=9999)
+			{
+				parent[v]=u;
+				d[v] = d[u]+cost[u][v];
+			}
+			}
+		}
+	
+	display(d , parent);
+}
+
+//findMin function
+//return the top element of the heap
+//time complexity O(1)
+bool findMin(int top){
+	for (int i = 0; i< V ; i++){
+		if (top == 0)
+		return false;
+		else
+		return top;
+	}
+}
+
+//merge function
+//the tree with min root becomes leftmost subtree
+//time complexity O(1)
+void merge (int heap1, int heap2){
+	int heap1elem=[];
+	int heap2elem=[];
+	if(heap1 == 0)
+		return heap2;
+	else if (heap2 == 0)
+		return heap1;
+	else if (heap1elem < heap2elem)
+		return Heap(heap1elem, heap2=heap1.subheaps);
+	else
+		return Heap(heap2elem, heap1=heap2.subheaps);
+}
+
+//insert function
+//time complexity O(1)
+void insert (int elem[], int heap){
+	return merge(heap(elem, []), heap);
+}
+
+//delete function
+//time complexity O(log n)
+bool deleteMin(int heap){
+	if (heap == 0)
+		return false;
+	else 
+		return mergePair;
+}
+
+int main(void){
+	cout << "Enter n: ";
+	cin >> V;
+	cout << "Enter cost matrix: \n";
+	for(int i=0; i < V ; i++){
+		for(int j = 0; j < V; j++){
+			cin >> cost [i][j];
+		}
+	}
+	cout << "Enter source node : ";
+	cin >> s;
+	init();
+	dijkstra(s);
+}
