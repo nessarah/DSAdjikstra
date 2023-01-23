@@ -1,0 +1,94 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define INF 999
+
+//DIJKSTRA
+
+int V, s, cost[100][100];
+int d[100];
+bool visited[100] = {0};
+int parent[100];
+
+void init(){
+	for (int i = 0; i< V ; i++){
+		parent[i]=i;
+		d[i] = INF ;
+	}
+	d[s] = 0;
+}
+
+int getMin(int d[], bool visited[]){
+	int minvalue = INF;
+	int minnode = 0;
+	for(int i = 0; i<V; i++){
+		if(!visited[i] && d[i] < minvalue){
+			minvalue = d[i];
+			minnode = i;
+		}
+	}
+	return minnode;
+}
+
+void display(int d[], int parent[]){
+	//cout<<"Node:\t\t\tCost : \t\t\tPath";
+	
+	for (int i=0; i <V ; i++)
+	{
+		//cout<<i<<"\t\t\t"<<d[i]<<"\t\t\t"<<" ";
+		
+		cout<<i<<" ";
+		int parnode = parent[i];
+		
+		while(parnode != -1){
+			cout<<" <- " << parnode << " ";
+			parnode = parent[parnode];
+		}
+		cout<<endl;
+		cout<<"::::Distance = " << d[i];
+		cout<<endl;
+	}
+}
+
+void dijkstra (int s) {
+	int parent[100], d[100];
+	bool visited[100] = {0};
+	fill(d, d+V, INF);
+	
+	d[s] = 0;
+	parent[s] = -1;
+	
+	for(int i = 0; i < V-1; i++){
+		int u = getMin(d, visited) ;
+		visited[u] = true;
+		cout << " min = " << u << endl;
+		for(int v = 0; v < V; v++){
+			if(!visited[u] && (d[u]+cost[u][v]) < d[v] && cost[u][v]!=9999)
+			{
+				parent[v]=u;
+				d[v] = d[u]+cost[u][v];
+			}
+			//if(cost[min][adj] != INF && 
+			//d[adj] < d[min] +cost[min][adj]){
+			//	d[adj] = d[min]+cost[min][adj];
+			//	parent[adj] = min;
+			}
+		}
+	
+	display(d , parent);
+}
+
+int main(void){
+	cout << "Enter n: ";
+	cin >> V;
+	cout << "Enter cost matrix: \n";
+	for(int i=0; i < V ; i++){
+		for(int j = 0; j < V; j++){
+			cin >> cost [i][j];
+		}
+	}
+	cout << "Enter source node : ";
+	cin >> s;
+	init();
+	dijkstra(s);
+}
